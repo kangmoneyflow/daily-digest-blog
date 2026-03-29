@@ -7,13 +7,14 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
-      --bg: #0f0f0f;
-      --surface: #1a1a1a;
-      --border: #333;
-      --text: #f1f1f1;
-      --text2: #aaa;
-      --red: #ff0000;
-      --green: #2ecc71;
+      --bg: #fafafa;
+      --surface: #fff;
+      --surface2: #f5f5f5;
+      --border: #e0e0e0;
+      --text: #222;
+      --text2: #888;
+      --accent: #1a73e8;
+      --accent-bg: #e8f0fe;
     }
     body {
       font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -21,84 +22,240 @@
       color: var(--text);
       line-height: 1.7;
     }
+
+    /* 헤더 */
     header {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
-      padding: 20px 24px;
-      text-align: center;
+      padding: 16px 24px;
     }
-    header h1 { font-size: 22px; }
-    header h1 span { color: var(--red); }
-    header p { font-size: 13px; color: var(--text2); margin-top: 4px; }
-    .container { max-width: 800px; margin: 0 auto; padding: 24px; }
-    .date-group { margin-bottom: 32px; }
+    header h1 { font-size: 20px; font-weight: 700; }
+
+    /* 카테고리 탭 */
+    .cat-tabs {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 24px;
+      display: flex;
+      gap: 0;
+      overflow-x: auto;
+    }
+    .cat-tab {
+      padding: 12px 20px;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      color: var(--text2);
+      font-size: 14px;
+      font-weight: 600;
+      white-space: nowrap;
+      transition: all 0.2s;
+    }
+    .cat-tab:hover { color: var(--text); }
+    .cat-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    /* 채널 서브탭 */
+    .ch-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 16px 0;
+      overflow-x: auto;
+      flex-wrap: wrap;
+    }
+    .ch-tab {
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text2);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .ch-tab:hover { border-color: var(--accent); color: var(--text); }
+    .ch-tab.active { background: var(--accent-bg); border-color: var(--accent); color: var(--accent); }
+
+    /* 컨텐츠 */
+    .container { max-width: 800px; margin: 0 auto; padding: 0 24px 40px; }
+
+    /* 날짜 그룹 */
+    .date-group { margin-bottom: 28px; }
     .date-title {
-      font-size: 18px;
-      font-weight: 700;
-      padding-bottom: 8px;
-      border-bottom: 2px solid var(--red);
-      margin-bottom: 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text2);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 12px;
     }
+
+    /* 포스트 카드 */
     .post-card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       overflow: hidden;
+      transition: box-shadow 0.2s;
     }
+    .post-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .post-header {
-      padding: 16px 20px;
+      padding: 14px 18px;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .post-header:hover { background: #222; }
-    .post-title { font-size: 15px; font-weight: 600; flex: 1; }
-    .post-channel { font-size: 12px; color: var(--text2); margin-top: 2px; }
-    .post-toggle { color: var(--text2); font-size: 12px; flex-shrink: 0; margin-left: 12px; }
+    .post-title { font-size: 15px; font-weight: 600; line-height: 1.4; }
+    .post-meta { font-size: 12px; color: var(--text2); margin-top: 3px; }
+    .post-toggle {
+      color: var(--accent);
+      font-size: 12px;
+      flex-shrink: 0;
+      margin-left: 12px;
+      font-weight: 500;
+    }
     .post-body {
       display: none;
-      padding: 0 20px 20px;
+      padding: 0 18px 18px;
       font-size: 14px;
-      line-height: 1.8;
+      line-height: 1.9;
       white-space: pre-wrap;
-      color: #ddd;
+      color: #444;
     }
     .post-body.open { display: block; }
     .post-link {
       display: inline-block;
       margin-top: 12px;
-      color: var(--red);
+      color: var(--accent);
       text-decoration: none;
       font-size: 13px;
+      font-weight: 500;
     }
     .post-link:hover { text-decoration: underline; }
-    .empty { text-align: center; padding: 48px; color: var(--text2); }
+
+    .empty { text-align: center; padding: 60px 20px; color: var(--text2); font-size: 15px; }
+
+    .post-count {
+      font-size: 12px;
+      color: var(--text2);
+      padding: 8px 0 0;
+    }
+
     @media (max-width: 640px) {
-      .container { padding: 16px; }
+      .container { padding: 0 16px 24px; }
+      .cat-tabs { padding: 0 16px; }
+      header { padding: 14px 16px; }
     }
   </style>
 </head>
 <body>
 
 <header>
-  <h1><span>YouTube</span> Daily Digest</h1>
-  <p>AI 요약으로 보는 유튜브 하이라이트</p>
+  <h1>Daily Digest</h1>
 </header>
 
-<div class="container" id="content">
-  <div class="empty">로딩 중...</div>
+<div class="cat-tabs" id="catTabs"></div>
+
+<div class="container">
+  <div class="ch-tabs" id="chTabs"></div>
+  <div id="postCount" class="post-count"></div>
+  <div id="content">
+    <div class="empty">로딩 중...</div>
+  </div>
 </div>
 
 <script>
-  async function loadPosts() {
+  let allPosts = [];
+  let currentCat = '';
+  let currentCh = '';
+
+  async function init() {
     const res = await fetch('posts/index.json');
     if (!res.ok) {
       document.getElementById('content').innerHTML = '<div class="empty">아직 요약된 글이 없습니다.</div>';
       return;
     }
-    const posts = await res.json();
+    allPosts = await res.json();
+    if (allPosts.length === 0) {
+      document.getElementById('content').innerHTML = '<div class="empty">아직 요약된 글이 없습니다.</div>';
+      return;
+    }
+
+    // 카테고리 탭 생성
+    const categories = [...new Set(allPosts.map(p => p.category || '유튜브'))];
+    const catTabs = document.getElementById('catTabs');
+    catTabs.innerHTML = categories.map(c =>
+      `<div class="cat-tab" data-cat="${esc(c)}">${esc(c)}</div>`
+    ).join('');
+
+    catTabs.querySelectorAll('.cat-tab').forEach(tab => {
+      tab.addEventListener('click', () => selectCategory(tab.dataset.cat));
+    });
+
+    // 첫 카테고리 선택
+    selectCategory(categories[0]);
+  }
+
+  function selectCategory(cat) {
+    currentCat = cat;
+    currentCh = '';
+
+    // 카테고리 탭 활성화
+    document.querySelectorAll('.cat-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.cat === cat);
+    });
+
+    // 해당 카테고리의 채널 목록
+    const catPosts = allPosts.filter(p => (p.category || '유튜브') === cat);
+    const channels = [...new Set(catPosts.map(p => p.channelName))];
+
+    // 채널 서브탭 생성
+    const chTabs = document.getElementById('chTabs');
+    if (channels.length > 1) {
+      chTabs.innerHTML =
+        `<div class="ch-tab active" data-ch="">전체</div>` +
+        channels.map(c => `<div class="ch-tab" data-ch="${esc(c)}">${esc(c)}</div>`).join('');
+
+      chTabs.querySelectorAll('.ch-tab').forEach(tab => {
+        tab.addEventListener('click', () => selectChannel(tab.dataset.ch));
+      });
+      chTabs.style.display = '';
+    } else {
+      chTabs.innerHTML = '';
+      chTabs.style.display = 'none';
+    }
+
+    renderPosts(catPosts);
+  }
+
+  function selectChannel(ch) {
+    currentCh = ch;
+
+    // 채널 탭 활성화
+    document.querySelectorAll('.ch-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.ch === ch);
+    });
+
+    let posts = allPosts.filter(p => (p.category || '유튜브') === currentCat);
+    if (ch) {
+      posts = posts.filter(p => p.channelName === ch);
+    }
+    renderPosts(posts);
+  }
+
+  function renderPosts(posts) {
+    const content = document.getElementById('content');
+    const countEl = document.getElementById('postCount');
+
+    if (posts.length === 0) {
+      content.innerHTML = '<div class="empty">해당 카테고리에 요약된 글이 없습니다.</div>';
+      countEl.textContent = '';
+      return;
+    }
+
+    countEl.textContent = `총 ${posts.length}건`;
 
     // 날짜별 그룹핑
     const grouped = {};
@@ -109,34 +266,34 @@
     }
 
     const dates = Object.keys(grouped).sort().reverse();
-    if (dates.length === 0) {
-      document.getElementById('content').innerHTML = '<div class="empty">아직 요약된 글이 없습니다.</div>';
-      return;
-    }
-
     let html = '';
     for (const date of dates) {
       html += `<div class="date-group">`;
-      html += `<div class="date-title">${date}</div>`;
+      html += `<div class="date-title">${date} (${grouped[date].length}건)</div>`;
       for (const p of grouped[date]) {
         html += `
           <div class="post-card">
-            <div class="post-header" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.post-toggle').textContent=this.nextElementSibling.classList.contains('open')?'접기':'펼치기'">
+            <div class="post-header" onclick="togglePost(this)">
               <div>
                 <div class="post-title">${esc(p.title)}</div>
-                <div class="post-channel">${esc(p.channelName)}</div>
+                <div class="post-meta">${esc(p.channelName)} · ${p.date}</div>
               </div>
               <span class="post-toggle">펼치기</span>
             </div>
-            <div class="post-body">
-${esc(p.summary)}
-<a class="post-link" href="${esc(p.link)}" target="_blank">YouTube에서 보기 &rarr;</a>
-            </div>
+            <div class="post-body">${esc(p.summary)}
+
+<a class="post-link" href="${esc(p.link)}" target="_blank">YouTube에서 보기 →</a></div>
           </div>`;
       }
       html += `</div>`;
     }
-    document.getElementById('content').innerHTML = html;
+    content.innerHTML = html;
+  }
+
+  function togglePost(header) {
+    const body = header.nextElementSibling;
+    body.classList.toggle('open');
+    header.querySelector('.post-toggle').textContent = body.classList.contains('open') ? '접기' : '펼치기';
   }
 
   function esc(str) {
@@ -145,7 +302,7 @@ ${esc(p.summary)}
     return d.innerHTML;
   }
 
-  loadPosts();
+  init();
 </script>
 </body>
 </html>
