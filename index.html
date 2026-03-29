@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Digest</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --border: #333;
+      --text: #f1f1f1;
+      --text2: #aaa;
+      --red: #ff0000;
+      --green: #2ecc71;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px;
+      text-align: center;
+    }
+    header h1 { font-size: 22px; }
+    header h1 span { color: var(--red); }
+    header p { font-size: 13px; color: var(--text2); margin-top: 4px; }
+    .container { max-width: 800px; margin: 0 auto; padding: 24px; }
+    .date-group { margin-bottom: 32px; }
+    .date-title {
+      font-size: 18px;
+      font-weight: 700;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--red);
+      margin-bottom: 16px;
+    }
+    .post-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 12px;
+      overflow: hidden;
+    }
+    .post-header {
+      padding: 16px 20px;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .post-header:hover { background: #222; }
+    .post-title { font-size: 15px; font-weight: 600; flex: 1; }
+    .post-channel { font-size: 12px; color: var(--text2); margin-top: 2px; }
+    .post-toggle { color: var(--text2); font-size: 12px; flex-shrink: 0; margin-left: 12px; }
+    .post-body {
+      display: none;
+      padding: 0 20px 20px;
+      font-size: 14px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      color: #ddd;
+    }
+    .post-body.open { display: block; }
+    .post-link {
+      display: inline-block;
+      margin-top: 12px;
+      color: var(--red);
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .post-link:hover { text-decoration: underline; }
+    .empty { text-align: center; padding: 48px; color: var(--text2); }
+    @media (max-width: 640px) {
+      .container { padding: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1><span>YouTube</span> Daily Digest</h1>
+  <p>AI 요약으로 보는 유튜브 하이라이트</p>
+</header>
+
+<div class="container" id="content">
+  <div class="empty">로딩 중...</div>
+</div>
+
+<script>
+  async function loadPosts() {
+    const res = await fetch('posts/index.json');
+    if (!res.ok) {
+      document.getElementById('content').innerHTML = '<div class="empty">아직 요약된 글이 없습니다.</div>';
+      return;
+    }
+    const posts = await res.json();
+
+    // 날짜별 그룹핑
+    const grouped = {};
+    for (const p of posts) {
+      const date = p.date || '날짜 없음';
+      if (!grouped[date]) grouped[date] = [];
+      grouped[date].push(p);
+    }
+
+    const dates = Object.keys(grouped).sort().reverse();
+    if (dates.length === 0) {
+      document.getElementById('content').innerHTML = '<div class="empty">아직 요약된 글이 없습니다.</div>';
+      return;
+    }
+
+    let html = '';
+    for (const date of dates) {
+      html += `<div class="date-group">`;
+      html += `<div class="date-title">${date}</div>`;
+      for (const p of grouped[date]) {
+        html += `
+          <div class="post-card">
+            <div class="post-header" onclick="this.nextElementSibling.classList.toggle('open');this.querySelector('.post-toggle').textContent=this.nextElementSibling.classList.contains('open')?'접기':'펼치기'">
+              <div>
+                <div class="post-title">${esc(p.title)}</div>
+                <div class="post-channel">${esc(p.channelName)}</div>
+              </div>
+              <span class="post-toggle">펼치기</span>
+            </div>
+            <div class="post-body">
+${esc(p.summary)}
+<a class="post-link" href="${esc(p.link)}" target="_blank">YouTube에서 보기 &rarr;</a>
+            </div>
+          </div>`;
+      }
+      html += `</div>`;
+    }
+    document.getElementById('content').innerHTML = html;
+  }
+
+  function esc(str) {
+    const d = document.createElement('div');
+    d.textContent = str || '';
+    return d.innerHTML;
+  }
+
+  loadPosts();
+</script>
+</body>
+</html>
