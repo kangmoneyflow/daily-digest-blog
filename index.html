@@ -22,8 +22,6 @@
       color: var(--text);
       line-height: 1.7;
     }
-
-    /* 헤더 */
     header {
       background: var(--surface);
       border-bottom: 1px solid var(--border);
@@ -31,102 +29,82 @@
     }
     header h1 { font-size: 20px; font-weight: 700; }
 
-    /* 레이아웃 */
-    .layout {
-      display: flex;
-      max-width: 1100px;
-      margin: 0 auto;
-      min-height: calc(100vh - 57px);
-    }
+    .layout { display: flex; max-width: 1100px; margin: 0 auto; min-height: calc(100vh - 57px); }
 
     /* 사이드바 */
     .sidebar {
-      width: 240px;
+      width: 250px;
       flex-shrink: 0;
       background: var(--surface);
       border-right: 1px solid var(--border);
-      padding: 16px 0;
+      padding: 12px 0;
       overflow-y: auto;
+      position: sticky;
+      top: 0;
+      height: 100vh;
     }
-    .nav-section { margin-bottom: 4px; }
-    .nav-main {
-      padding: 10px 20px;
-      font-size: 15px;
-      font-weight: 700;
-      color: var(--text);
+    .nav-item {
+      padding: 9px 16px;
+      font-size: 13px;
       cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 8px;
-    }
-    .nav-main:hover { background: var(--surface2); }
-    .nav-category {
-      padding: 8px 20px 8px 32px;
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text2);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .nav-category:hover { background: var(--surface2); color: var(--text); }
-    .nav-channel {
-      padding: 7px 20px 7px 48px;
-      font-size: 13px;
-      color: var(--text2);
-      cursor: pointer;
+      justify-content: space-between;
       transition: all 0.15s;
       border-left: 3px solid transparent;
     }
-    .nav-channel:hover { background: var(--surface2); color: var(--text); }
-    .nav-channel.active {
-      color: var(--accent);
-      background: var(--accent-bg);
-      border-left-color: var(--accent);
-      font-weight: 600;
-    }
+    .nav-item:hover { background: var(--surface2); }
+    .nav-item.active { color: var(--accent); background: var(--accent-bg); border-left-color: var(--accent); font-weight: 600; }
+    .nav-item .nav-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
     .nav-count {
       font-size: 11px;
       color: var(--text2);
       background: var(--surface2);
-      padding: 1px 6px;
+      padding: 1px 7px;
       border-radius: 10px;
-      margin-left: auto;
+      flex-shrink: 0;
+      margin-left: 8px;
     }
-    .nav-channel.active .nav-count { background: #c5daf7; color: var(--accent); }
+    .nav-item.active .nav-count { background: #c5daf7; color: var(--accent); }
+
+    /* 레벨별 들여쓰기 */
+    .nav-lv0 { font-size: 15px; font-weight: 700; padding: 12px 16px; color: var(--text); }
+    .nav-lv1 { padding-left: 28px; font-weight: 600; color: #555; }
+    .nav-lv2 { padding-left: 44px; color: var(--text2); }
+
     .nav-toggle {
       font-size: 10px;
       color: var(--text2);
+      margin-right: 6px;
       transition: transform 0.2s;
+      display: inline-block;
     }
-    .nav-section.collapsed .nav-toggle { transform: rotate(-90deg); }
-    .nav-section.collapsed .nav-sub { display: none; }
+    .nav-toggle.collapsed { transform: rotate(-90deg); }
 
     /* 컨텐츠 */
-    .content {
-      flex: 1;
-      padding: 24px;
-      min-width: 0;
-    }
+    .content { flex: 1; padding: 24px; min-width: 0; }
     .content-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
       margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--accent);
     }
     .content-title { font-size: 18px; font-weight: 700; }
     .content-count { font-size: 13px; color: var(--text2); }
+    .content-breadcrumb { font-size: 12px; color: var(--text2); margin-bottom: 12px; }
+    .content-breadcrumb span { cursor: pointer; color: var(--accent); }
+    .content-breadcrumb span:hover { text-decoration: underline; }
 
     /* 날짜 그룹 */
-    .date-group { margin-bottom: 24px; }
+    .date-group { margin-bottom: 20px; }
     .date-title {
       font-size: 13px;
       font-weight: 600;
       color: var(--text2);
       padding: 6px 0;
-      border-bottom: 1px solid var(--border);
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
     /* 포스트 카드 */
@@ -134,30 +112,24 @@
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 10px;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
       overflow: hidden;
       transition: box-shadow 0.2s;
     }
     .post-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .post-header {
-      padding: 14px 18px;
+      padding: 12px 16px;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .post-title { font-size: 15px; font-weight: 600; line-height: 1.4; }
-    .post-meta { font-size: 12px; color: var(--text2); margin-top: 3px; }
-    .post-toggle {
-      color: var(--accent);
-      font-size: 12px;
-      flex-shrink: 0;
-      margin-left: 12px;
-      font-weight: 500;
-    }
+    .post-title { font-size: 14px; font-weight: 600; line-height: 1.4; }
+    .post-meta { font-size: 12px; color: var(--text2); margin-top: 2px; }
+    .post-toggle { color: var(--accent); font-size: 12px; flex-shrink: 0; margin-left: 12px; font-weight: 500; }
     .post-body {
       display: none;
-      padding: 0 18px 18px;
+      padding: 0 16px 16px;
       font-size: 14px;
       line-height: 1.9;
       white-space: pre-wrap;
@@ -176,27 +148,12 @@
     .empty { text-align: center; padding: 60px 20px; color: var(--text2); font-size: 15px; }
 
     /* 모바일 */
-    .sidebar-toggle { display: none; }
+    .mobile-nav-toggle { display: none; background: var(--surface); border-bottom: 1px solid var(--border); padding: 10px 16px; font-size: 14px; color: var(--accent); cursor: pointer; font-weight: 600; }
     @media (max-width: 768px) {
       .layout { flex-direction: column; }
-      .sidebar {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid var(--border);
-        max-height: none;
-        overflow: visible;
-      }
-      .sidebar.mobile-hidden .nav-sub,
-      .sidebar.mobile-hidden .nav-category,
-      .sidebar.mobile-hidden .nav-channel { display: none; }
-      .sidebar-toggle {
-        display: block;
-        padding: 10px 20px;
-        font-size: 13px;
-        color: var(--accent);
-        cursor: pointer;
-        text-align: center;
-      }
+      .sidebar { width: 100%; height: auto; position: static; border-right: none; border-bottom: 1px solid var(--border); }
+      .sidebar.hidden { display: none; }
+      .mobile-nav-toggle { display: block; }
       .content { padding: 16px; }
     }
   </style>
@@ -206,6 +163,7 @@
 <header>
   <h1>Daily Digest</h1>
 </header>
+<div class="mobile-nav-toggle" onclick="document.getElementById('sidebar').classList.toggle('hidden')">메뉴</div>
 
 <div class="layout">
   <nav class="sidebar" id="sidebar"></nav>
@@ -216,122 +174,145 @@
 
 <script>
   let allPosts = [];
-  let currentChannel = '';
+  let currentFilter = { level: 'all', category: '', channel: '' };
 
   async function init() {
     const res = await fetch('posts/index.json');
     if (!res.ok) {
-      document.getElementById('content').innerHTML = '<div class="empty">아직 요약된 글이 없습니다.</div>';
+      showEmpty();
       return;
     }
     allPosts = await res.json();
     if (allPosts.length === 0) {
-      document.getElementById('content').innerHTML = '<div class="empty">아직 요약된 글이 없습니다.</div>';
+      showEmpty();
       return;
     }
 
     buildSidebar();
+    // 기본: 전체 보기
+    navigate('all', '', '');
+  }
 
-    // 첫 채널 자동 선택
-    const firstChannel = document.querySelector('.nav-channel');
-    if (firstChannel) selectChannel(firstChannel.dataset.ch);
+  function showEmpty() {
+    document.getElementById('content').innerHTML = '<div class="empty">아직 요약된 글이 없습니다.</div>';
+    document.getElementById('sidebar').innerHTML = '';
   }
 
   function buildSidebar() {
-    const sidebar = document.getElementById('sidebar');
-
-    // 구조: 유튜브 > category > channel
-    // category별 채널 그룹핑
+    // 구조 수집: category > channel > count
     const catMap = {};
+    let totalCount = 0;
     for (const p of allPosts) {
       const cat = p.category || '기타';
       const ch = p.channelName;
       if (!catMap[cat]) catMap[cat] = {};
       if (!catMap[cat][ch]) catMap[cat][ch] = 0;
       catMap[cat][ch]++;
+      totalCount++;
     }
 
     let html = '';
-    html += `<div class="nav-section">`;
-    html += `<div class="nav-main">유튜브</div>`;
-    html += `<div class="nav-sub">`;
+
+    // 유튜브 (전체)
+    html += `<div class="nav-item nav-lv0" data-level="all" data-cat="" data-ch="" onclick="navigate('all','','')">
+      <span class="nav-label">유튜브</span>
+      <span class="nav-count">${totalCount}</span>
+    </div>`;
 
     for (const [cat, channels] of Object.entries(catMap)) {
       const catTotal = Object.values(channels).reduce((a, b) => a + b, 0);
-      html += `<div class="nav-section">`;
-      html += `<div class="nav-category" onclick="this.parentElement.classList.toggle('collapsed')">
-        <span class="nav-toggle">▼</span> ${esc(cat)}
+
+      // 카테고리
+      html += `<div class="nav-item nav-lv1" data-level="category" data-cat="${esc(cat)}" data-ch="" onclick="navigate('category','${escQ(cat)}','')">
+        <span class="nav-label">${esc(cat)}</span>
         <span class="nav-count">${catTotal}</span>
       </div>`;
-      html += `<div class="nav-sub">`;
+
+      // 채널
       for (const [ch, count] of Object.entries(channels)) {
-        html += `<div class="nav-channel" data-ch="${esc(ch)}" onclick="selectChannel('${escAttr(ch)}')">
-          ${esc(ch)} <span class="nav-count">${count}</span>
+        html += `<div class="nav-item nav-lv2" data-level="channel" data-cat="${esc(cat)}" data-ch="${esc(ch)}" onclick="navigate('channel','${escQ(cat)}','${escQ(ch)}')">
+          <span class="nav-label">${esc(ch)}</span>
+          <span class="nav-count">${count}</span>
         </div>`;
       }
-      html += `</div></div>`;
     }
 
-    html += `</div></div>`;
-
-    // 모바일 토글
-    html += `<div class="sidebar-toggle" onclick="document.getElementById('sidebar').classList.toggle('mobile-hidden')">메뉴 접기/펼치기</div>`;
-
-    sidebar.innerHTML = html;
+    document.getElementById('sidebar').innerHTML = html;
   }
 
-  function selectChannel(ch) {
-    currentChannel = ch;
+  function navigate(level, category, channel) {
+    currentFilter = { level, category, channel };
 
-    // 활성 상태 업데이트
-    document.querySelectorAll('.nav-channel').forEach(el => {
-      el.classList.toggle('active', el.dataset.ch === ch);
+    // 사이드바 활성 표시
+    document.querySelectorAll('.nav-item').forEach(el => {
+      const match =
+        (level === 'all' && el.dataset.level === 'all') ||
+        (level === 'category' && el.dataset.level === 'category' && el.dataset.cat === category) ||
+        (level === 'channel' && el.dataset.level === 'channel' && el.dataset.ch === channel);
+      el.classList.toggle('active', match);
     });
 
-    const posts = allPosts.filter(p => p.channelName === ch);
-    renderPosts(ch, posts);
+    // 필터링
+    let posts = allPosts;
+    let title = '유튜브';
+    let breadcrumb = '';
 
-    // 모바일에서 사이드바 접기
+    if (level === 'category') {
+      posts = allPosts.filter(p => (p.category || '기타') === category);
+      title = category;
+      breadcrumb = `<span onclick="navigate('all','','')">유튜브</span> &gt; ${esc(category)}`;
+    } else if (level === 'channel') {
+      posts = allPosts.filter(p => p.channelName === channel);
+      title = channel;
+      breadcrumb = `<span onclick="navigate('all','','')">유튜브</span> &gt; <span onclick="navigate('category','${escQ(category)}','')">${esc(category)}</span> &gt; ${esc(channel)}`;
+    }
+
+    renderPosts(title, posts, breadcrumb);
+
+    // 모바일 사이드바 닫기
     if (window.innerWidth <= 768) {
-      document.getElementById('sidebar').classList.add('mobile-hidden');
+      document.getElementById('sidebar').classList.add('hidden');
     }
   }
 
-  function renderPosts(channelName, posts) {
+  function renderPosts(title, posts, breadcrumb) {
     const content = document.getElementById('content');
 
     if (posts.length === 0) {
       content.innerHTML = `
-        <div class="content-header"><div class="content-title">${esc(channelName)}</div></div>
+        ${breadcrumb ? `<div class="content-breadcrumb">${breadcrumb}</div>` : ''}
+        <div class="content-header"><div class="content-title">${esc(title)}</div></div>
         <div class="empty">요약된 글이 없습니다.</div>`;
       return;
     }
 
-    // 날짜별 그룹핑
+    // 날짜별 그룹핑 (최신순)
     const grouped = {};
     for (const p of posts) {
       const date = p.date || '날짜 없음';
       if (!grouped[date]) grouped[date] = [];
       grouped[date].push(p);
     }
-
     const dates = Object.keys(grouped).sort().reverse();
-    let html = `
-      <div class="content-header">
-        <div class="content-title">${esc(channelName)}</div>
-        <div class="content-count">${posts.length}건</div>
-      </div>`;
+
+    let html = '';
+    if (breadcrumb) html += `<div class="content-breadcrumb">${breadcrumb}</div>`;
+    html += `<div class="content-header">
+      <div class="content-title">${esc(title)}</div>
+      <div class="content-count">${posts.length}건</div>
+    </div>`;
 
     for (const date of dates) {
       html += `<div class="date-group">`;
-      html += `<div class="date-title">${date}</div>`;
+      html += `<div class="date-title">${date} (${grouped[date].length}건)</div>`;
       for (const p of grouped[date]) {
+        const showChannel = currentFilter.level !== 'channel';
         html += `
           <div class="post-card">
             <div class="post-header" onclick="togglePost(this)">
               <div>
                 <div class="post-title">${esc(p.title)}</div>
-                <div class="post-meta">${p.date}</div>
+                <div class="post-meta">${showChannel ? esc(p.channelName) + ' · ' : ''}${p.date}</div>
               </div>
               <span class="post-toggle">펼치기</span>
             </div>
@@ -357,8 +338,8 @@
     return d.innerHTML;
   }
 
-  function escAttr(str) {
-    return str.replace(/'/g, "\\'").replace(/"/g, '&quot;');
+  function escQ(str) {
+    return (str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
   }
 
   init();
