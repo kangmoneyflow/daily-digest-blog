@@ -80,6 +80,7 @@
       display: inline-block;
     }
     .nav-toggle.collapsed { transform: rotate(-90deg); }
+    .nav-section { overflow: hidden; }
 
     /* 컨텐츠 */
     .content { flex: 1; padding: 24px; min-width: 0; }
@@ -215,28 +216,35 @@
 
     // 유튜브 (전체)
     html += `<div class="nav-item nav-lv0" data-level="all" data-cat="" data-ch="" onclick="navigate('all','','')">
+      <span class="nav-toggle" onclick="event.stopPropagation();toggleSection('yt-all')">▼</span>
       <span class="nav-label">유튜브</span>
       <span class="nav-count">${totalCount}</span>
     </div>`;
+    html += `<div class="nav-section" id="yt-all">`;
 
     for (const [cat, channels] of Object.entries(catMap)) {
       const catTotal = Object.values(channels).reduce((a, b) => a + b, 0);
+      const catId = 'cat-' + cat.replace(/\s/g, '_');
 
       // 카테고리
       html += `<div class="nav-item nav-lv1" data-level="category" data-cat="${esc(cat)}" data-ch="" onclick="navigate('category','${escQ(cat)}','')">
+        <span class="nav-toggle" onclick="event.stopPropagation();toggleSection('${catId}')">▼</span>
         <span class="nav-label">${esc(cat)}</span>
         <span class="nav-count">${catTotal}</span>
       </div>`;
 
-      // 채널
+      // 채널 그룹
+      html += `<div class="nav-section" id="${catId}">`;
       for (const [ch, count] of Object.entries(channels)) {
         html += `<div class="nav-item nav-lv2" data-level="channel" data-cat="${esc(cat)}" data-ch="${esc(ch)}" onclick="navigate('channel','${escQ(cat)}','${escQ(ch)}')">
           <span class="nav-label">${esc(ch)}</span>
           <span class="nav-count">${count}</span>
         </div>`;
       }
+      html += `</div>`;
     }
 
+    html += `</div>`;
     document.getElementById('sidebar').innerHTML = html;
   }
 
@@ -324,6 +332,16 @@
       html += `</div>`;
     }
     content.innerHTML = html;
+  }
+
+  function toggleSection(id) {
+    const section = document.getElementById(id);
+    if (!section) return;
+    const hidden = section.style.display === 'none';
+    section.style.display = hidden ? '' : 'none';
+    // 토글 아이콘 업데이트
+    const toggle = section.previousElementSibling?.querySelector('.nav-toggle');
+    if (toggle) toggle.classList.toggle('collapsed', !hidden);
   }
 
   function togglePost(header) {
